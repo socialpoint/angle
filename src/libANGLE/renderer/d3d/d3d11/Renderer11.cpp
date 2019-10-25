@@ -720,7 +720,9 @@ HRESULT Renderer11::callD3D11On12CreateDevice(PFN_D3D12_CREATE_DEVICE createDevi
 egl::Error Renderer11::initializeD3DDevice()
 {
     HRESULT result             = S_OK;
+#if !defined(ANGLE_ENABLE_WINDOWS_UWP)
     bool createD3D11on12Device = false;
+#endif
 
     if (!mCreatedWithDeviceEXT)
     {
@@ -789,11 +791,13 @@ egl::Error Renderer11::initializeD3DDevice()
         if (mCreateDebugDevice)
         {
             ANGLE_TRACE_EVENT0("gpu.angle", "D3D11CreateDevice (Debug)");
+#if !defined(ANGLE_ENABLE_WINDOWS_UWP)
             if (createD3D11on12Device)
             {
                 result = callD3D11On12CreateDevice(D3D12CreateDevice, D3D11on12CreateDevice, true);
             }
             else
+#endif
             {
                 result = callD3D11CreateDevice(D3D11CreateDevice, true);
             }
@@ -805,12 +809,14 @@ egl::Error Renderer11::initializeD3DDevice()
                 // Try again without passing D3D_FEATURE_LEVEL_11_1 in case we have other feature
                 // levels to fall back on.
                 mAvailableFeatureLevels.erase(mAvailableFeatureLevels.begin());
+#if !defined(ANGLE_ENABLE_WINDOWS_UWP)
                 if (createD3D11on12Device)
                 {
                     result =
                         callD3D11On12CreateDevice(D3D12CreateDevice, D3D11on12CreateDevice, true);
                 }
                 else
+#endif
                 {
                     result = callD3D11CreateDevice(D3D11CreateDevice, true);
                 }
@@ -825,11 +831,13 @@ egl::Error Renderer11::initializeD3DDevice()
         if (!mDevice || FAILED(result))
         {
             ANGLE_TRACE_EVENT0("gpu.angle", "D3D11CreateDevice");
+#if !defined(ANGLE_ENABLE_WINDOWS_UWP)
             if (createD3D11on12Device)
             {
                 result = callD3D11On12CreateDevice(D3D12CreateDevice, D3D11on12CreateDevice, false);
             }
             else
+#endif
             {
                 result = callD3D11CreateDevice(D3D11CreateDevice, false);
             }
@@ -841,12 +849,14 @@ egl::Error Renderer11::initializeD3DDevice()
                 // Try again without passing D3D_FEATURE_LEVEL_11_1 in case we have other feature
                 // levels to fall back on.
                 mAvailableFeatureLevels.erase(mAvailableFeatureLevels.begin());
+#if !defined(ANGLE_ENABLE_WINDOWS_UWP)
                 if (createD3D11on12Device)
                 {
                     result =
                         callD3D11On12CreateDevice(D3D12CreateDevice, D3D11on12CreateDevice, false);
                 }
                 else
+#endif
                 {
                     result = callD3D11CreateDevice(D3D11CreateDevice, false);
                 }

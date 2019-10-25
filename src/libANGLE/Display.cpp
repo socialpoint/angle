@@ -1248,7 +1248,11 @@ static ClientExtensions GenerateClientExtensions()
 #endif
 
 #if defined(ANGLE_ENABLE_D3D11)
+#	if defined(ANGLE_ENABLE_WINDOWS_WIN32)
     extensions.platformANGLED3D11ON12 = IsWindows10OrGreater();
+#	else
+	extensions.platformANGLED3D11ON12 = false;
+#	endif
 #endif
 
 #if defined(ANGLE_ENABLE_OPENGL)
